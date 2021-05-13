@@ -11,17 +11,19 @@ import java.util.List;
 
 public class Cuenta {
 
-  private double saldo = 0;
+  private double saldo = 0; //Esta inicializacion es redundante, ya que, se inicializa en el constructor
   private List<Movimiento> movimientos = new ArrayList<>();
 
   public Cuenta() {
     saldo = 0;
   }
 
+  //Esto no se usa nunca, pero mejor seria juntar con el otro constructor y poner null en el monto inicial si no vamos a poner nada
   public Cuenta(double montoInicial) {
     saldo = montoInicial;
   }
 
+  //nunca se utiliza
   public void setMovimientos(List<Movimiento> movimientos) {
     this.movimientos = movimientos;
   }
@@ -31,6 +33,7 @@ public class Cuenta {
       throw new MontoNegativoException(cuanto + ": el monto a ingresar debe ser un valor positivo");
     }
 
+    //la expresion lambda puede ser reemplazada por un metodo referenciado
     if (getMovimientos().stream().filter(movimiento -> movimiento.isDeposito()).count() >= 3) {
       throw new MaximaCantidadDepositosException("Ya excedio los " + 3 + " depositos diarios");
     }

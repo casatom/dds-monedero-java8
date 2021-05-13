@@ -3,10 +3,13 @@ package dds.monedero.model;
 import java.time.LocalDate;
 
 public class Movimiento {
+  //puede ser final porque se inicializa y no se modifica
   private LocalDate fecha;
   //En ningún lenguaje de programación usen jamás doubles para modelar dinero en el mundo real
   //siempre usen numeros de precision arbitraria, como BigDecimal en Java y similares
+  //puede ser final porque se inicializa y no se modifica
   private double monto;
+  //puede ser final porque se inicializa y no se modifica
   private boolean esDeposito;
 
   public Movimiento(LocalDate fecha, double monto, boolean esDeposito) {
@@ -23,10 +26,12 @@ public class Movimiento {
     return fecha;
   }
 
+  //No se uso nunca
   public boolean fueDepositado(LocalDate fecha) {
     return isDeposito() && esDeLaFecha(fecha);
   }
 
+  //No se uso nunca
   public boolean fueExtraido(LocalDate fecha) {
     return isExtraccion() && esDeLaFecha(fecha);
   }
