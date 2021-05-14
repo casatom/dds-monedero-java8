@@ -7,16 +7,12 @@ import dds.monedero.exceptions.SaldoMenorException;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
-import java.util.function.Function;
-import java.util.stream.Stream;
-
 public class Cuenta {
 
   private double saldo;
-  private List<Movimiento> movimientos = new ArrayList<>();
+  private final List<Movimiento> movimientos = new ArrayList<>();
 
   public Cuenta() {
     saldo = 0;
