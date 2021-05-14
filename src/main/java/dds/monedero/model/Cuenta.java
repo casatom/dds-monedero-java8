@@ -11,7 +11,7 @@ import java.util.List;
 
 public class Cuenta {
 
-  private double saldo = 0; //Esta inicializacion es redundante, ya que, se inicializa en el constructor
+  private double saldo; //Esta inicializacion es redundante, ya que, se inicializa en el constructor ya sea en 0 o con un monto inicial
   private List<Movimiento> movimientos = new ArrayList<>();
 
   public Cuenta() {
