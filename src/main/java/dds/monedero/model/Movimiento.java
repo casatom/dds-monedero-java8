@@ -26,12 +26,12 @@ public class Movimiento {
     return fecha;
   }
 
-  //No se uso nunca
+  //No se uso nunca, porque hay que usarlo para los depositos que se realizaron en la misma fecha
   public boolean fueDepositado(LocalDate fecha) {
     return isDeposito() && esDeLaFecha(fecha);
   }
 
-  //No se uso nunca
+  //No se uso nunca, porque hay que usarlo para las extracciones que se realizaron en la misma fecha
   public boolean fueExtraido(LocalDate fecha) {
     return isExtraccion() && esDeLaFecha(fecha);
   }

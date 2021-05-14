@@ -7,11 +7,14 @@ import dds.monedero.exceptions.SaldoMenorException;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.function.Function;
+import java.util.stream.Stream;
 
 public class Cuenta {
 
-  private double saldo; //Esta inicializacion es redundante, ya que, se inicializa en el constructor ya sea en 0 o con un monto inicial
+  private double saldo;
   private List<Movimiento> movimientos = new ArrayList<>();
 
   public Cuenta() {
@@ -24,18 +27,48 @@ public class Cuenta {
     saldo = montoInicial;
   }
 
-  //nunca se utiliza
+  //nunca se utiliza, y estos movimientos no van a tener impacto en el saldo de la cuenta
   public void setMovimientos(List<Movimiento> movimientos) {
-    this.movimientos = movimientos;
+    Iterator<Movimiento> iterator = movimientos.stream().iterator(Cuenta::ponerOSacarPorMovimiento);
   }
 
-  public void poner(double cuanto) {
-    if (cuanto <= 0) {
-      throw new MontoNegativoException(cuanto + ": el monto a ingresar debe ser un valor positivo");
-    }
 
-    //la expresion lambda puede ser reemplazada por un metodo referenciado
-    if (getMovimientos().stream().filter(movimiento -> movimiento.isDeposito()).count() >= 3) {
+  private void ponerOSacarPorMovimiento(Movimiento movimiento){
+    if(movimiento.isDeposito()){
+      ponerMovimientoDeposito(movimiento);
+    }
+    if(movimiento.isExtraccion()){
+      sacarMovimientoExtraccion(movimiento);
+    }
+  }
+
+  private void ponerMovimientoDeposito(Movimiento movimiento){
+    validarMontoNegativo(movimiento.getMonto());
+    movimiento.agregateA(this);
+    
+  }
+
+  private void sacarMovimientoExtraccion(Movimiento movimiento){
+    validarMontoNegativo(movimiento.getMonto());
+
+    if (getSaldo() - movimiento.getMonto() < 0) {
+      throw new SaldoMenorException("No puede sacar mas de " + getSaldo() + " $");
+    }
+    double montoExtraidoHoy = getMontoExtraidoA(movimiento.getFecha());
+    double limite = 1000 - montoExtraidoHoy;
+    if (movimiento.getMonto() > limite) {
+      throw new MaximoExtraccionDiarioException("No puede extraer mas de $ " + 1000
+          + " diarios, límite: " + limite);
+    }
+    
+    movimiento.agregateA(this);
+  }
+
+
+  public void poner(double cuanto) {
+    validarMontoNegativo(cuanto);
+    //la funcion de deposito no estaba validando que sea de la misma fecha
+    if (getMovimientos().stream().filter(movimiento -> movimiento.fueDepositado(LocalDate.now())).count() >= 3) {
       throw new MaximaCantidadDepositosException("Ya excedio los " + 3 + " depositos diarios");
     }
 
@@ -43,9 +76,7 @@ public class Cuenta {
   }
 
   public void sacar(double cuanto) {
-    if (cuanto <= 0) {
-      throw new MontoNegativoException(cuanto + ": el monto a ingresar debe ser un valor positivo");
-    }
+    validarMontoNegativo(cuanto);
     if (getSaldo() - cuanto < 0) {
       throw new SaldoMenorException("No puede sacar mas de " + getSaldo() + " $");
     }
@@ -80,6 +111,12 @@ public class Cuenta {
 
   public void setSaldo(double saldo) {
     this.saldo = saldo;
+  }
+  
+  private void validarMontoNegativo(double cuanto){
+    if (cuanto <= 0) {
+      throw new MontoNegativoException(cuanto + ": el monto a ingresar debe ser un valor positivo");
+    }
   }
 
 }
