@@ -9,6 +9,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
@@ -28,10 +29,13 @@ public class Cuenta {
   }
 
   //nunca se utiliza, y estos movimientos no van a tener impacto en el saldo de la cuenta
+  //lo resolvi poniendo los movimientos e impactandolos en la cuenta
   public void setMovimientos(List<Movimiento> movimientos) {
-    Iterator<Movimiento> iterator = movimientos.stream().iterator(Cuenta::ponerOSacarPorMovimiento);
+    ListIterator<Movimiento> movimientoListIterator = movimientos.listIterator();
+    while (movimientoListIterator.hasNext()){
+      ponerOSacarPorMovimiento(movimientoListIterator.next());
+    }
   }
-
 
   private void ponerOSacarPorMovimiento(Movimiento movimiento){
     if(movimiento.isDeposito()){
