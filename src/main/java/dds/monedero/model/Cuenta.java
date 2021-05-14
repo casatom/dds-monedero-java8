@@ -44,6 +44,9 @@ public class Cuenta {
 
   private void ponerMovimientoDeposito(Movimiento movimiento){
     validarMontoNegativo(movimiento.getMonto());
+    if (getMovimientos().stream().filter(movim -> movim.fueDepositado(movimiento.getFecha())).count() >= 3) {
+      throw new MaximaCantidadDepositosException("Ya excedio los " + 3 + " depositos diarios");
+    }
     movimiento.agregateA(this);
     
   }
