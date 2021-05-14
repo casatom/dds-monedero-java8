@@ -4,13 +4,13 @@ import java.time.LocalDate;
 
 public class Movimiento {
   //puede ser final porque se inicializa y no se modifica
-  private LocalDate fecha;
+  private final LocalDate fecha;
   //En ningún lenguaje de programación usen jamás doubles para modelar dinero en el mundo real
   //siempre usen numeros de precision arbitraria, como BigDecimal en Java y similares
   //puede ser final porque se inicializa y no se modifica
-  private double monto;
+  private final double monto;
   //puede ser final porque se inicializa y no se modifica
-  private boolean esDeposito;
+  private final boolean esDeposito;
 
   public Movimiento(LocalDate fecha, double monto, boolean esDeposito) {
     this.fecha = fecha;
