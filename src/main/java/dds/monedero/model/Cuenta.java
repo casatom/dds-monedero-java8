@@ -19,6 +19,7 @@ public class Cuenta {
   }
 
   //Esto no se usa nunca, pero mejor seria juntar con el otro constructor y poner null en el monto inicial si no vamos a poner nada
+  //Monto inicial puede ser negativo
   public Cuenta(double montoInicial) {
     saldo = montoInicial;
   }
